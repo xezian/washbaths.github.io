@@ -259,23 +259,24 @@ Bathing from first light
 	<form id="payment-form">
 		<input id="name" placeholder="Enter your name"></input>
 		<div id="card-container"></div>
-		<button id="card-button" disabled="true" type="button">Buy Gift Card</button>
+		<button id="card-button" disabled="true" type="button"></button>
 	</div>
 </form>
 <div id="payment-status-container"></div>
 <script type="text/javascript">
+	const cardButton = document.getElementById(
+		"card-button"
+	);
 	document.getElementById("select-option").addEventListener("change", (e) => {
 		const cardInfo = document.getElementById("enter-card-info");
 		if (e.target.options[e.target.selectedIndex].value.length) {
 			cardInfo.style.display = "flex";
+			cardButton.innerText = "Pay $" + e.target.options[e.target.selectedIndex].value + ".00"
 		} else {
 			cardInfo.style.display = "none";
 		}
 	})
 	document.getElementById("name").addEventListener("change", (e) => {
-		const cardButton = document.getElementById(
-			"card-button"
-		);
 		if (e.target.value.length) {
 			cardButton.disabled = false;
 		} else {
