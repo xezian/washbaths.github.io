@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "micro-dev"
+  },
+  "dependencies": {
+    "micro-dev": "^3.1.0",
+    "serve-handler": "^6.1.3"
+  }
+}
