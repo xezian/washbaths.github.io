@@ -23,11 +23,12 @@
 	 // Call this function to send a payment token, buyer name, and other details
 	// to the project server code so that a payment can be created with 
 	// Payments API
-	async function createPayment(token, name) {
+	async function createPayment(token, name, amount) {
 		const body = JSON.stringify({
 			locationId,
 			sourceId: token,
-			name
+			name,
+			amount
 		});
 		const paymentResponse = await fetch("/payment", {
 			method: "POST",
@@ -103,7 +104,8 @@
 				cardButton.disabled = true;
 				const token = await tokenize(paymentMethod);
 				const name = document.getElementById("name").value
-				const paymentResults = await createPayment(token, name);
+				const amount = document.getElementById("select-amount").value
+				const paymentResults = await createPayment(token, name, amount);
 				displayPaymentResults("SUCCESS");
 
 				console.debug("Payment Success", paymentResults);
@@ -248,7 +250,7 @@ Bathing from first light
 <h4>
 	Purchase a Gift Card online:
 </h4>
-<select id="select-option">
+<select id="select-amount">
 	<option selected value=""> -- Select an option -- </option>
 	<option value="35">Single Entry ($35)</option>
 	<option value="150">5 Pass ($150)</option>
@@ -267,7 +269,7 @@ Bathing from first light
 	const cardButton = document.getElementById(
 		"card-button"
 	);
-	document.getElementById("select-option").addEventListener("change", (e) => {
+	document.getElementById("select-amount").addEventListener("change", (e) => {
 		const cardInfo = document.getElementById("enter-card-info");
 		if (e.target.options[e.target.selectedIndex].value.length) {
 			cardInfo.style.display = "flex";
