@@ -6,125 +6,6 @@
 
 <head>
 
-
-<script
-	type="text/javascript"
-	src="https://sandbox.web.squarecdn.com/v1/square.js"
->
-</script>
-<script type="text/javascript">
-	const appId = "sandbox-sq0idb-dilJpyWO1B3GKzvaH3oHLw";
-	const locationId = "LXM5VQZ278WHG"; 
-	async function initializeCard(payments) {
-		const card = await payments.card();
-		await card.attach("#card-container"); 
-		return card; 
-	};
-	 // Call this function to send a payment token, buyer name, and other details
-	// to the project server code so that a payment can be created with 
-	// Payments API
-	async function createPayment(token, name, amount) {
-		const body = JSON.stringify({
-			locationId,
-			sourceId: token,
-			name,
-			amount
-		});
-		const paymentResponse = await fetch("/payment", {
-			method: "POST",
-			headers: {
-			"Content-Type": "application/json",
-			},
-			body,
-		});
-		if (paymentResponse.ok) {
-			return paymentResponse.json();
-		}
-		const errorBody = await paymentResponse.text();
-		throw new Error(errorBody);
-	}
-
-	// This function tokenizes a payment method. 
-	// The ‘error’ thrown from this async function denotes a failed tokenization,
-	// which is due to buyer error (such as an expired card). It is up to the
-	// developer to handle the error and provide the buyer the chance to fix
-	// their mistakes.
-	async function tokenize(paymentMethod) {
-		const tokenResult = await paymentMethod.tokenize();
-		if (tokenResult.status === "OK") {
-			return tokenResult.token;
-		} else {
-			let errorMessage = `Tokenization failed-status: ${tokenResult.status}`;
-			if (tokenResult.errors) {
-			errorMessage += ` and errors: ${JSON.stringify(
-				tokenResult.errors
-			)}`;
-			}
-			throw new Error(errorMessage);
-		}
-	}
-
-	// Helper method for displaying the Payment Status on the screen.
-	// status is either SUCCESS or FAILURE;
-	function displayPaymentResults(status) {
-		const statusContainer = document.getElementById(
-			"payment-status-container"
-		);
-		if (status === "SUCCESS") {
-			statusContainer.classList.remove("is-failure");
-			statusContainer.classList.add("is-success");
-		} else {
-			statusContainer.classList.remove("is-success");
-			statusContainer.classList.add("is-failure");
-		}
-
-		statusContainer.style.visibility = "visible";
-	}    
-
-
-	document.addEventListener("DOMContentLoaded", async function () {
-		if (!window.Square) {
-			throw new Error("Square.js failed to load properly");
-		}
-		const payments = window.Square.payments(appId, locationId);
-		let card;
-		try {
-			card = await initializeCard(payments);
-		} catch (e) {
-			console.error("Initializing Card failed", e);
-			return;
-		}
-
-		async function handlePaymentMethodSubmission(event, paymentMethod) {
-			event.preventDefault();
-
-			try {
-				// disable the submit button as we await tokenization and make a
-				// payment request.
-				cardButton.disabled = true;
-				const token = await tokenize(paymentMethod);
-				const name = document.getElementById("name").value
-				const amount = document.getElementById("select-amount").value
-				const paymentResults = await createPayment(token, name, amount);
-				displayPaymentResults("SUCCESS");
-
-				console.debug("Payment Success", paymentResults);
-			} catch (e) {
-				cardButton.disabled = false;
-				displayPaymentResults("FAILURE");
-				console.error(e.message);
-			}
-		};
-		const cardButton = document.getElementById(
-			"card-button"
-		);
-		cardButton.addEventListener("click", async function (event) {
-			await handlePaymentMethodSubmission(event, card);
-		});
-
-	});
-</script>
-
 <title>Washington Baths</title>
 
 <link href="app.css" rel="stylesheet" />
@@ -158,12 +39,36 @@ Last entry at 8pm<br><br>
 <u>Silence is observed on Fridays</u><br><br>
 
 
-
-Single Entry - $35<br>
-
-5 Pass - $150<br>
-
-10 Pass - $280<br><br>
+<div style="display:flex;align-items:center;justify-content:center;">
+Single Example - $1
+<a title="Purchase $1 Single Example online" noopener noreferrer target="_blank" href="https://square.link/u/tRdCZZXK">
+	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+		<polyline points="15 3 21 3 21 9"></polyline>
+		<line x1="10" y1="14" x2="21" y2="3"></line>
+	</svg>
+</a>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;">
+Double Example - $2
+<a title="Purchase $2 Double Example online" noopener noreferrer target="_blank" href="https://square.link/u/iARaBDl8">
+	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+		<polyline points="15 3 21 3 21 9"></polyline>
+		<line x1="10" y1="14" x2="21" y2="3"></line>
+	</svg>
+</a>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;">
+10 Pass - $280
+<a title="Purchase $280 10 Pass online" noopener noreferrer target="_blank" href="./bonus.html">
+	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+		<polyline points="15 3 21 3 21 9"></polyline>
+		<line x1="10" y1="14" x2="21" y2="3"></line>
+	</svg>
+</a>
+</div>
 
 No reservations. All genders welcome. Bathing suits required in common areas.<br><br>
 
@@ -246,55 +151,6 @@ Bathing from first light
 
 </form>
 <br />
-
-<h4>
-	Purchase a Gift Card online:
-</h4>
-<select id="select-amount">
-	<option selected value=""> -- Select an option -- </option>
-	<option value="35">Single Entry ($35)</option>
-	<option value="150">5 Pass ($150)</option>
-	<option value="280">10 Pass ($280)</option>
-</select>
-<!-- Square web payment for gift cards -->
-<div style="display:none" id="enter-card-info">
-	<form id="payment-form">
-		<input id="name" placeholder="Enter your name"></input>
-		<div id="card-container"></div>
-		<button id="card-button" disabled="true" type="button"></button>
-	</div>
-</form>
-<div id="payment-status-container"></div>
-<script type="text/javascript">
-	const cardButton = document.getElementById(
-		"card-button"
-	);
-	document.getElementById("select-amount").addEventListener("change", (e) => {
-		const cardInfo = document.getElementById("enter-card-info");
-		if (e.target.options[e.target.selectedIndex].value.length) {
-			cardInfo.style.display = "flex";
-			cardButton.innerText = "Pay $" + e.target.options[e.target.selectedIndex].value + ".00"
-		} else {
-			cardInfo.style.display = "none";
-		}
-	})
-	document.getElementById("name").addEventListener("change", (e) => {
-		if (e.target.value.length) {
-			cardButton.disabled = false;
-		} else {
-			cardButton.disabled = true;
-		}
-	})
-</script>
-
-</div>
-
-
-
-
-<!--End mc_embed_signup-->
-
-	
 
 <br>
 
