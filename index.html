@@ -38,36 +38,40 @@ Last entry at 8pm<br><br>
 
 <u>Silence is observed on Fridays</u><br><br>
 
+Single Entry - $35<br>
 
-<div style="display:flex;align-items:center;justify-content:center;">
-Single Example - $1
-<a title="Purchase $1 Single Example online" noopener noreferrer target="_blank" href="https://square.link/u/tRdCZZXK">
-	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-		<polyline points="15 3 21 3 21 9"></polyline>
-		<line x1="10" y1="14" x2="21" y2="3"></line>
-	</svg>
-</a>
-</div>
-<div style="display:flex;align-items:center;justify-content:center;">
-Double Example - $2
-<a title="Purchase $2 Double Example online" noopener noreferrer target="_blank" href="https://square.link/u/iARaBDl8">
-	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-		<polyline points="15 3 21 3 21 9"></polyline>
-		<line x1="10" y1="14" x2="21" y2="3"></line>
-	</svg>
-</a>
-</div>
-<div style="display:flex;align-items:center;justify-content:center;">
-10 Pass - $280
-<a title="Purchase $280 10 Pass online" noopener noreferrer target="_blank" href="./bonus.html">
-	<svg style="transform:scale(.7);" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-		<polyline points="15 3 21 3 21 9"></polyline>
-		<line x1="10" y1="14" x2="21" y2="3"></line>
-	</svg>
-</a>
+5 Pass - $150<br>
+
+10 Pass - $280<br>
+<div class="gift-cards">
+	<div>Purchase a gift card online:</div>
+	<select id="top-drop">
+		<option disabled selected value>Select Amount</option>
+		<option value="https://square.link/u/tRdCZZXK">Single Example - $1</option>
+		<option value="https://square.link/u/iARaBDl8">Double Example - $2</option>
+		<option value="http://localhost:3000/bonus.html">10 Pass - $280</option>
+		<option value="custom">Custom Amount</option>
+	</select>
+	<div id="custom-amount-area">
+		<label for="custom-amount">Enter custom amount (in dollars)</label>
+		<input id="custom-amount" type="number" min="1" step="1" value="" pattern="^\d*(\.\d{0,2})?$"/>
+		<script type="text/javascript">
+			document.getElementById("custom-amount").addEventListener("keydown", (e) => {
+				const pattern = e.target.pattern
+				const oldVal = e.target.value
+				const regex = new RegExp(pattern, 'g')
+				setTimeout(() => {
+					const newVal = e.target.value;
+					if (!regex.test(newVal)) {
+						e.target.value = oldVal
+					}
+				}, 1)
+			})
+		</script>
+	</div>
+	<div id="payment-button-area">
+
+	</div>
 </div>
 
 No reservations. All genders welcome. Bathing suits required in common areas.<br><br>
@@ -167,6 +171,7 @@ info@washingtonbaths.com<br>
 
 
 </center>
+<script src="./services/gift-cards.js"></script>
 </body>
 
 </html>
