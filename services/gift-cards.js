@@ -11,6 +11,10 @@ const OPTIONS_CONFIG = {
     url: "/bonus.html",
     amount: 280,
   },
+  custom: {
+    url: "#",
+    amount: 0,
+  },
 };
 
 const createPayButton = (option) => {
@@ -25,21 +29,68 @@ const createPayButton = (option) => {
   seat.style.display = "block";
 };
 
-const createInputField = () => {
+const getCustomLink = () => {
+  // implement square link creation here
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("/bonus.html");
+    }, 3000);
+  });
+};
+
+let buttonUpdated = false;
+
+const clickCustom = async (e) => {
+  if (buttonUpdated) {
+    buttonUpdated = false;
+    return;
+  }
+  e.preventDefault();
+  const amount = document.getElementById("custom-amount").value;
+  if (amount > 0) {
+    const link = await getCustomLink(amount);
+    e.target.setAttribute("href", link);
+    buttonUpdated = true;
+    e.target.click();
+  }
+};
+
+const updateAmount = (e) => {
+  const butt = document.getElementById("payment-button-area").firstChild;
+  if (e.target.value >= 1) {
+    butt.innerText = `Pay $${e.target.value}`;
+    document.getElementById("payment-button-area").style.display = "block";
+  } else {
+    document.getElementById("payment-button-area").style.display = "none";
+  }
+};
+
+const createInputField = async () => {
   document.getElementById("custom-amount-area").style.display = "flex";
   document.getElementById("custom-amount-area").style.flexDirection = "column";
   document.getElementById("custom-amount-area").style.alignItems = "center";
+  document
+    .getElementById("custom-amount")
+    .addEventListener("keyup", updateAmount);
+  createPayButton("custom");
+  const butt = document.getElementById("payment-button-area").firstChild;
+  butt.addEventListener("click", clickCustom);
 };
 
-document.getElementById("top-drop").addEventListener("change", (e) => {
+const listenToDropdown = (e) => {
   if (["single", "double", "tenPass"].includes(e.target.value)) {
     document.getElementById("custom-amount-area").style.display = "none";
     createPayButton(e.target.value);
   } else if (e.target.value === "custom") {
-    document.getElementById("payment-button-area").style.display = "none";
     createInputField();
+    document.getElementById("payment-button-area").style.display = "none";
   } else if (e.target.value === "none") {
     document.getElementById("custom-amount-area").style.display = "none";
     document.getElementById("payment-button-area").style.display = "none";
   }
-});
+};
+
+// setup listeners
+document
+  .getElementById("top-drop")
+  .addEventListener("change", listenToDropdown);
