@@ -69,9 +69,9 @@ const createInputField = async () => {
   document.getElementById("custom-amount-area").style.display = "flex";
   document.getElementById("custom-amount-area").style.flexDirection = "column";
   document.getElementById("custom-amount-area").style.alignItems = "center";
-  document
-    .getElementById("custom-amount")
-    .addEventListener("keyup", updateAmount);
+  const inputAmount = document.getElementById("custom-amount");
+  inputAmount.value = "";
+  inputAmount.addEventListener("keyup", updateAmount);
   createPayButton("custom");
   const butt = document.getElementById("payment-button-area").firstChild;
   butt.addEventListener("click", clickCustom);
