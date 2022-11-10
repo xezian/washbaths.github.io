@@ -1,3 +1,8 @@
+const SQUARE_CONFIG = {
+  locationId: "LXM5VQZ278WHG",
+  accessToken: "", // TODO move request to AWS lambda
+};
+
 const OPTIONS_CONFIG = {
   single: {
     url: "https://square.link/u/tRdCZZXK",
@@ -29,8 +34,33 @@ const createPayButton = (option) => {
   seat.style.display = "block";
 };
 
-const getCustomLink = () => {
+const getCustomLink = async () => {
   // implement square link creation here
+  // move this junk to AWS lambda and instead just call the lambda url from here.
+
+  // const requestBody = {
+  //   idempotency_key: uuidv4(),
+  //   quick_pay: {
+  //     price_money: {
+  //       amount: amount * 100,
+  //       currency: "USD",
+  //     },
+  //     location_id: SQUARE_CONFIG.locationId,
+  //   },
+  // };
+
+  // const response = await fetch(
+  //   "https://connect.squareupsandbox.com/v2/online-checkout/payment-links",
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${SQUARE_CONFIG.accessToken}`,
+  //      },
+  //     body: JSON.stringify(requestBody),
+  //   }
+  // );
+
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve("/bonus.html");
