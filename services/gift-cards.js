@@ -34,41 +34,25 @@ const createPayButton = (option) => {
   seat.style.display = "block";
 };
 
-const getCustomLink = async () => {
+const getCustomLink = async (amount) => {
   // implement square link creation here
-  // move this junk to AWS lambda and instead just call the lambda url from here.
+  const response = await fetch("https://efbjsu2cjjvrnrsqphpdbwzti40fivgj.lambda-url.us-east-1.on.aws/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json" // this shows the expected content type
 
-  // const requestBody = {
-  //   idempotency_key: uuidv4(),
-  //   quick_pay: {
-  //     price_money: {
-  //       amount: amount * 100,
-  //       currency: "USD",
-  //     },
-  //     location_id: SQUARE_CONFIG.locationId,
-  //   },
-  // };
-
-  // const response = await fetch(
-  //   "https://connect.squareupsandbox.com/v2/online-checkout/payment-links",
-  //   {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${SQUARE_CONFIG.accessToken}`,
-  //      },
-  //     body: JSON.stringify(requestBody),
-  //   }
-  // );
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("/bonus.html");
-    }, 3000);
+    },
+    body: JSON.stringify({
+      locationId: SQUARE_CONFIG.locationId,
+      amount: parseInt(amount) * 100 // in cents
+    })
   });
+  const responseParsed = await response.json()
+  return responseParsed.url
 };
 
 let buttonUpdated = false;
+let fetchingLink = false;
 
 const clickCustom = async (e) => {
   if (buttonUpdated) {
@@ -76,12 +60,23 @@ const clickCustom = async (e) => {
     return;
   }
   e.preventDefault();
+  if (fetchingLink) return;
   const amount = document.getElementById("custom-amount").value;
   if (amount > 0) {
+    const seat = document.getElementById("payment-button-area");
+    const newDiv = document.createElement("div");    
+    newDiv.innerText = `...Creating custom checkout for $${amount}`
+    seat.appendChild(newDiv);
+    fetchingLink = true;
     const link = await getCustomLink(amount);
+    newDiv.remove();
     e.target.setAttribute("href", link);
     buttonUpdated = true;
-    e.target.click();
+    // give the api a third sec
+    setTimeout(()=> {
+      fetchingLink = false;
+      e.target.click();
+    },333)
   }
 };
 
