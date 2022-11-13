@@ -51,14 +51,9 @@ const getCustomLink = async (amount) => {
   return responseParsed.url
 };
 
-let buttonUpdated = false;
 let fetchingLink = false;
 
 const clickCustom = async (e) => {
-  if (buttonUpdated) {
-    buttonUpdated = false;
-    return;
-  }
   e.preventDefault();
   if (fetchingLink) return;
   const amount = document.getElementById("custom-amount").value;
@@ -70,12 +65,10 @@ const clickCustom = async (e) => {
     fetchingLink = true;
     const link = await getCustomLink(amount);
     newDiv.remove();
-    e.target.setAttribute("href", link);
-    buttonUpdated = true;
     // give the api a third sec
     setTimeout(()=> {
       fetchingLink = false;
-      e.target.click();
+      window.open(link, "_blank")
     },333)
   }
 };
