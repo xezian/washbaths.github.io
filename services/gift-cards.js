@@ -13,7 +13,7 @@ const OPTIONS_CONFIG = {
     amount: 2,
   },
   tenPass: {
-    url: "/bonus.html",
+    url: "/washbaths.github.io/bonus.html",
     amount: 280,
   },
   custom: {
