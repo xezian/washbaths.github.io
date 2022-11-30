@@ -1,5 +1,5 @@
 const SQUARE_CONFIG = {
-  locationId: "LXM5VQZ278WHG",
+  locationId: "LRW80YM4VGE0J",
   accessToken: "", // TODO move request to AWS lambda
 };
 
@@ -36,19 +36,21 @@ const createPayButton = (option) => {
 
 const getCustomLink = async (amount) => {
   // implement square link creation here
-  const response = await fetch("https://efbjsu2cjjvrnrsqphpdbwzti40fivgj.lambda-url.us-east-1.on.aws/", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json" // this shows the expected content type
-
-    },
-    body: JSON.stringify({
-      locationId: SQUARE_CONFIG.locationId,
-      amount: parseInt(amount) * 100 // in cents
-    })
-  });
-  const responseParsed = await response.json()
-  return responseParsed.url
+  const response = await fetch(
+    "https://abwcljjy6usvqqtehogspljqb40mvvtt.lambda-url.us-east-1.on.aws/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // this shows the expected content type
+      },
+      body: JSON.stringify({
+        locationId: SQUARE_CONFIG.locationId,
+        amount: parseInt(amount) * 100, // in cents
+      }),
+    }
+  );
+  const responseParsed = await response.json();
+  return responseParsed.url;
 };
 
 let fetchingLink = false;
@@ -59,17 +61,17 @@ const clickCustom = async (e) => {
   const amount = document.getElementById("custom-amount").value;
   if (amount > 0) {
     const seat = document.getElementById("payment-button-area");
-    const newDiv = document.createElement("div");    
-    newDiv.innerText = `...Creating custom checkout for $${amount}`
+    const newDiv = document.createElement("div");
+    newDiv.innerText = `...Creating custom checkout for $${amount}`;
     seat.appendChild(newDiv);
     fetchingLink = true;
     const link = await getCustomLink(amount);
     newDiv.remove();
     // give the api a third sec
-    setTimeout(()=> {
+    setTimeout(() => {
       fetchingLink = false;
-      window.open(link, "_blank")
-    },333)
+      window.open(link, "_blank");
+    }, 333);
   }
 };
 
