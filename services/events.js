@@ -8,7 +8,7 @@ const loopText = (text) => {
 };
 
 const populateUpcomingEvents = async () => {
-  const response = await fetch("/washbaths.github.io/services/events.json");
+  const response = await fetch("/washbaths.github.io/events.json");
   const events = await response.json();
   const place = document.getElementById("upcoming-events");
   if (!place) return;
@@ -29,7 +29,7 @@ const populateUpcomingEvents = async () => {
 };
 
 const populatePastEvents = async () => {
-  const response = await fetch("/washbaths.github.io/services/events.json");
+  const response = await fetch("/washbaths.github.io/events.json");
   const events = await response.json();
   const place = document.getElementById("past-events");
   if (!place) return;
