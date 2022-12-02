@@ -12,7 +12,6 @@ const paymentSchema = {
   },
   optionalProperties: {
     idempotencyKey: { type: "string" },
-    shipIt: { type: "boolean" },
   },
 };
 
@@ -51,14 +50,19 @@ const createPayment = async (req, client) => {
           currency: "USD",
         },
         locationId: payload.locationId,
+        checkoutOptions: {
+          askForShippingAddress: true,
+          customFields: [
+            {
+              title: "Mail giftcard to shipping address?",
+              type: "BOOLEAN",
+            },
+          ],
+        },
       },
     };
 
-    if (payload.shipIt) {
-      payment.checkout_options = {
-        ask_for_shipping_address: true,
-      };
-    }
+    console.log(payload);
 
     const { result, statusCode } = await client.checkoutApi.createPaymentLink(
       payment

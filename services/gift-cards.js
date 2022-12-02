@@ -34,26 +34,6 @@ const createPayButton = (option) => {
   seat.style.display = "block";
 };
 
-const createShipItCheckbox = () => {
-  const seat = document.getElementById("custom-amount-area");
-  const newDiv = document.createElement("div");
-  newDiv.style.display = "flex";
-  newDiv.style.flexDirection = "row";
-  newDiv.style.alignItems = "center";
-  newDiv.style.marginTop = "10px";
-  const newInput = document.createElement("input");
-  newInput.setAttribute("type", "checkbox");
-  newInput.setAttribute("id", "ship-it");
-  const newLabel = document.createElement("label");
-  newLabel.setAttribute("for", "ship-it");
-  newLabel.innerText = "Ship It";
-  newLabel.title =
-    "When checked, custom checkout link will require a shipping address to mail your gift card";
-  newDiv.appendChild(newInput);
-  newDiv.appendChild(newLabel);
-  seat.appendChild(newDiv);
-};
-
 const getCustomLink = async (amount, shipIt) => {
   // implement square link creation here
   const response = await fetch(
@@ -66,7 +46,6 @@ const getCustomLink = async (amount, shipIt) => {
       body: JSON.stringify({
         locationId: SQUARE_CONFIG.locationId,
         amount: parseInt(amount) * 100, // in cents
-        shipIt,
       }),
     }
   );
@@ -115,7 +94,6 @@ const createInputField = async () => {
   inputAmount.value = "";
   inputAmount.addEventListener("keyup", updateAmount);
   createPayButton("custom");
-  createShipItCheckbox();
   const butt = document.getElementById("payment-button-area").firstChild;
   butt.addEventListener("click", clickCustom);
 };
