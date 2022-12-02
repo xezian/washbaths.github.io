@@ -34,7 +34,7 @@ const createPayButton = (option) => {
   seat.style.display = "block";
 };
 
-const getCustomLink = async (amount, shipIt) => {
+const getCustomLink = async (amount) => {
   // implement square link creation here
   const response = await fetch(
     "https://abwcljjy6usvqqtehogspljqb40mvvtt.lambda-url.us-east-1.on.aws/",
@@ -59,14 +59,13 @@ const clickCustom = async (e) => {
   e.preventDefault();
   if (fetchingLink) return;
   const amount = document.getElementById("custom-amount").value;
-  const shipIt = document.getElementById("ship-it").checked;
   if (amount > 0) {
     const seat = document.getElementById("payment-button-area");
     const newDiv = document.createElement("div");
     newDiv.innerText = `...Creating custom checkout for $${amount}`;
     seat.appendChild(newDiv);
     fetchingLink = true;
-    const link = await getCustomLink(amount, shipIt);
+    const link = await getCustomLink(amount);
     newDiv.remove();
     // give the api a third sec
     setTimeout(() => {
