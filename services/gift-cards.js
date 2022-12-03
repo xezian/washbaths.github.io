@@ -72,9 +72,9 @@ const clickCustom = async (e) => {
     butt.setAttribute("target", "_blank");
     butt.setAttribute("rel", "nooopener noreferrer");
     butt.setAttribute("href", link);
+    butt.innerText = `Pay $${amount}`;
     // give the api a third sec
     setTimeout(() => {
-      newDiv.innerText = `Pay $${amount}`;
       newDiv.replaceChildren(butt);
       fetchingLink = false;
     }, 333);
