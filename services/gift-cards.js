@@ -66,11 +66,17 @@ const clickCustom = async (e) => {
     seat.appendChild(newDiv);
     fetchingLink = true;
     const link = await getCustomLink(amount);
-    newDiv.remove();
+    newDiv.innerText = "";
+    const butt = document.createElement("a");
+    butt.setAttribute("class", "pay-button");
+    butt.setAttribute("target", "_blank");
+    butt.setAttribute("rel", "nooopener noreferrer");
+    butt.setAttribute("href", link);
     // give the api a third sec
     setTimeout(() => {
+      newDiv.innerText = `Pay $${amount}`;
+      newDiv.replaceChildren(butt);
       fetchingLink = false;
-      window.open(link, "_blank");
     }, 333);
   }
 };
@@ -78,7 +84,7 @@ const clickCustom = async (e) => {
 const updateAmount = (e) => {
   const butt = document.getElementById("payment-button-area").firstChild;
   if (e.target.value >= 1) {
-    butt.innerText = `Pay $${e.target.value}`;
+    butt.innerText = `Create $${e.target.value} custom checkout link`;
     document.getElementById("payment-button-area").style.display = "block";
   } else {
     document.getElementById("payment-button-area").style.display = "none";
@@ -92,8 +98,15 @@ const createInputField = async () => {
   const inputAmount = document.getElementById("custom-amount");
   inputAmount.value = "";
   inputAmount.addEventListener("keyup", updateAmount);
-  createPayButton("custom");
-  const butt = document.getElementById("payment-button-area").firstChild;
+  const seat = document.getElementById("payment-button-area");
+  const butt = document.createElement("a");
+  butt.setAttribute("class", "pay-button");
+  butt.setAttribute("target", "_blank");
+  butt.setAttribute("rel", "nooopener noreferrer");
+  butt.setAttribute("href", "#");
+  butt.innerText = "Create $0 custom checkout link";
+  seat.replaceChildren(butt);
+  seat.style.display = "block";
   butt.addEventListener("click", clickCustom);
 };
 

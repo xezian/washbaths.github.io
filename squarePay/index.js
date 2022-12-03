@@ -50,19 +50,18 @@ const createPayment = async (req, client) => {
           currency: "USD",
         },
         locationId: payload.locationId,
-        checkoutOptions: {
-          askForShippingAddress: true,
-          customFields: [
-            {
-              title: "Mail giftcard to shipping address?",
-              type: "BOOLEAN",
-            },
-          ],
-        },
+      },
+      checkoutOptions: {
+        customFields: [
+          {
+            title: "Mail to shipping address? Yes / No (Hold at baths)",
+          },
+        ],
+        askForShippingAddress: true,
       },
     };
 
-    console.log(payload);
+    console.log(payment);
 
     const { result, statusCode } = await client.checkoutApi.createPaymentLink(
       payment
@@ -78,7 +77,7 @@ const createPayment = async (req, client) => {
 
     return JSON.stringify(body);
   } catch (ex) {
-    console.log(`Error creating payment on attempt ${attempt}: ${ex}`);
+    console.log(`Error creating payment: ${ex}`);
     throw ex; // to attempt retry
   }
 };
