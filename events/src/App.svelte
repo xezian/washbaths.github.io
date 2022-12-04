@@ -40,7 +40,7 @@
       text: []
     },...eventsRoll]
   }
-  const createDatepicker = (event, index) => {
+  const createDatepicker = (event, index, dateIndex?) => {
     if (document.getElementById(`date-${index}`)) return;
     const datepicker = document.createElement("input");
     datepicker.type = "date";
@@ -53,9 +53,17 @@
         date: newDate,
         dateString: `${newDate.getMonth() + 1}/${newDate.getDate() + 1}`
       }
-      datepicker.remove()
+      datepicker.remove();
+      console.log(event.target)
+      event.target.style.display = "inherit";
     });
-    event.target.appendChild(datepicker);
+    // hide the text
+    const closeButton = createCloseButton(datepicker, event.target);
+    const hereGoes = document.createElement("div");
+    hereGoes.appendChild(datepicker);
+    hereGoes.appendChild(closeButton);
+    event.target.style.display = "none";
+    event.target.parentNode ? event.target.parentNode.appendChild(hereGoes) : event.target.appendChild(hereGoes);
   }
 
   const createTitleInput = (event, index) => {
@@ -70,8 +78,15 @@
         title: input.value
       }
       input.remove();
+      event.target.style.display = "inherit";
     });
-    event.target.appendChild(input);
+    // hide the text
+    event.target.style.display = "none";
+    const closeButton = createCloseButton(input, event.target);
+    const hereGoes = document.createElement("div");
+    hereGoes.appendChild(input);
+    hereGoes.appendChild(closeButton);
+    event.target.parentNode ? event.target.parentNode.appendChild(hereGoes) : event.target.appendChild(hereGoes);
   }
 
   const createTextInput = (event, index, textIndex) => {
@@ -86,15 +101,34 @@
         text: eventsRoll[index].text.map((t, i) => i === textIndex ? input.value : t)
       }
       input.remove();
-      event.target.style.display = "block";
-      event.target.onClick = () => createTextInput(event, index, textIndex);
+      event.target.style.display = "inherit";
     });
     // hide the text
-    console.log(event.target)
     event.target.style.display = "none";
-    // remove click listener
-    event.target.onClick = null;
-    event.target.parentNode.appendChild(input);
+    const closeButton = createCloseButton(input, event.target);
+    const hereGoes = document.createElement("div");
+    hereGoes.appendChild(input);
+    hereGoes.appendChild(closeButton);
+    event.target.parentNode ? event.target.parentNode.appendChild(hereGoes) : event.target.appendChild(hereGoes);
+  }
+
+  const createCloseButton = (elementToClose, targetToDisplay) => {
+    const button = document.createElement("button");
+    button.innerText = "x";
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      button.remove();
+      elementToClose.remove();
+      targetToDisplay.style.display = "inherit";
+    });
+    return button;
+  }
+
+  const addText = (index) => {
+    eventsRoll[index] = {
+      ...eventsRoll[index],
+      text: eventsRoll[index].text ? [...eventsRoll[index].text, "..."] : ["..."]
+    };
   }
 
   /**
@@ -130,7 +164,7 @@
           </svg>
         </button>
         <p>
-          <b>
+          <b class="title">
             <span on:keyup={()=>{}} on:click={(e)=>createDatepicker(e,i)}>
               <span>{event.dateString}</span>
             </span> - 
@@ -138,12 +172,20 @@
               <span>{event.title}</span>
             </span>
           </b>
-          <br />
           {#if event.text}
-            {#each [...event.text] as text, ti}
-              <span on:keyup={()=>{}} on:click={(e)=>createTextInput(e,i,ti)}><span>{text}</span></span><br />
-            {/each}
+            <div class="text">
+              {#each [...event.text] as text, ti}
+              <span id={`text-${i}-${ti}`} on:keyup={()=>{}} on:click={(e)=>createTextInput(e,i,ti)}><span>{text}</span></span>
+              {/each}
+            </div>
           {/if}
+          <button class="add-button" on:click={()=>addText(i)}>
+            <!-- plus sign -->
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1V15" stroke="black" stroke-width="2"/>
+              <path d="M1 8H15" stroke="black" stroke-width="2"/>
+            </svg>
+          </button>
           <br />
         </p>
       </div>
@@ -157,7 +199,7 @@
   }
   .manage div.events div.controlBox {
     width: 500px;
-    height: 100px;
+    min-height: 100px;
     border: 1px solid black;
     border-radius: 5px;
     margin: 10px;
@@ -183,5 +225,21 @@
   }
   .manage div.events div.controlBox button.close:hover svg path {
     stroke: #ccc;
+  }
+  .manage div.events div.controlBox p div.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .manage div.events div.controlBox p b.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .manage div.events div.controlBox p button.add-button {
+    display: grid;
+    place-items: center;
   }
 </style>
