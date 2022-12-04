@@ -13,7 +13,7 @@ const OPTIONS_CONFIG = {
     amount: 2,
   },
   tenPass: {
-    url: "/washbaths.github.io/bonus.html",
+    url: "https://square.link/u/iARaBDl8",
     amount: 280,
   },
   custom: {
