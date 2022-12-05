@@ -31,12 +31,26 @@
   const resetEvents = () => {
     eventsRoll = mapEvents(events);
   }
+
+  const getFormattedDate = (dateStr?:string) => {
+    const date = dateStr ? new Date(dateStr) : new Date();
+    // Generate yyyy-mm-dd date string
+    const yyyy = date.getFullYear().toString();
+    const mm = (date.getMonth()+1).toString();
+    const dd  = (date.getDate()).toString();
+    const formattedDate = yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+    return formattedDate;
+  }
+
   const addNew = () => {
-    const date = new Date();
+    const formattedDate = getFormattedDate();
+
+    const newDateObj = new Date(formattedDate);
+
     eventsRoll = [{
       title: "New Event",
-      date: date,
-      dateString: `${date.getMonth() + 1}/${date.getDate() + 1}`,
+      date: formattedDate,
+      dateString: `${newDateObj.getMonth() + 1}/${newDateObj.getDate() + 1}`,
       text: []
     },...eventsRoll]
   }
@@ -46,20 +60,41 @@
     datepicker.type = "date";
     datepicker.value = eventsRoll[index].date;
     datepicker.id = `date-${index}`;
+    const closeButton = createCloseButton();
     datepicker.addEventListener('change', (e) => {
-      const newDate = new Date(datepicker.value);
-      eventsRoll[index] = {
-        ...eventsRoll[index],
-        date: newDate,
-        dateString: `${newDate.getMonth() + 1}/${newDate.getDate() + 1}`
+      const newDateObj = new Date(datepicker.value);
+      if (dateIndex) {
+        let dateString = "";
+        if (dateIndex === 0) {
+          dateString = `${newDateObj.getMonth() + 1}/${newDateObj.getDate() + 1} through ${eventsRoll[index].dateString.split(" through ")[1]}`
+        } else {
+          dateString = `${eventsRoll[index].dateString.split(" through ")[0]} through ${newDateObj.getMonth() + 1}/${newDateObj.getDate() + 1}`
+        } 
+        eventsRoll[index] = {
+          ...eventsRoll[index],
+          date: eventsRoll[index].date.map((d, i) => i === dateIndex ? datepicker.value : d),
+          dateString
+        }
+      } else {
+        eventsRoll[index] = {
+          ...eventsRoll[index],
+          date: datepicker.value,
+          dateString: `${newDateObj.getMonth() + 1}/${newDateObj.getDate() + 1}`
+        }
       }
+      closeButton.remove();
       datepicker.remove();
       console.log(event.target)
       event.target.style.display = "inherit";
     });
     // hide the text
-    const closeButton = createCloseButton(datepicker, event.target);
     const hereGoes = document.createElement("div");
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeButton.remove();
+      datepicker.remove();
+      event.target.style.display = "inherit";
+    });
     hereGoes.appendChild(datepicker);
     hereGoes.appendChild(closeButton);
     event.target.style.display = "none";
@@ -72,18 +107,27 @@
     input.type = "text";
     input.id = `title-${index}`;
     input.value = eventsRoll[index].title;
+    const closeButton = createCloseButton();
     input.addEventListener('change', (e) => {
-      eventsRoll[index] = {
-        ...eventsRoll[index],
-        title: input.value
-      }
+      if (input.value.length) {
+        closeButton.remove();
+        eventsRoll[index] = {
+          ...eventsRoll[index],
+          title: input.value
+        }
+      };
       input.remove();
       event.target.style.display = "inherit";
     });
     // hide the text
     event.target.style.display = "none";
-    const closeButton = createCloseButton(input, event.target);
     const hereGoes = document.createElement("div");
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeButton.remove();
+      input.remove();
+      event.target.style.display = "inherit";
+    });
     hereGoes.appendChild(input);
     hereGoes.appendChild(closeButton);
     event.target.parentNode ? event.target.parentNode.appendChild(hereGoes) : event.target.appendChild(hereGoes);
@@ -105,22 +149,22 @@
     });
     // hide the text
     event.target.style.display = "none";
-    const closeButton = createCloseButton(input, event.target);
+    const closeButton = createCloseButton();
     const hereGoes = document.createElement("div");
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeButton.remove();
+      input.remove();
+      event.target.style.display = "inherit";
+    });
     hereGoes.appendChild(input);
     hereGoes.appendChild(closeButton);
     event.target.parentNode ? event.target.parentNode.appendChild(hereGoes) : event.target.appendChild(hereGoes);
   }
 
-  const createCloseButton = (elementToClose, targetToDisplay) => {
+  const createCloseButton = () => {
     const button = document.createElement("button");
     button.innerText = "x";
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      button.remove();
-      elementToClose.remove();
-      targetToDisplay.style.display = "inherit";
-    });
     return button;
   }
 
@@ -128,6 +172,23 @@
     eventsRoll[index] = {
       ...eventsRoll[index],
       text: eventsRoll[index].text ? [...eventsRoll[index].text, "..."] : ["..."]
+    };
+  }
+
+  const addDate = (index) => {
+    const date = getFormattedDate();
+    const dateObj = new Date(date);
+    eventsRoll[index].date = [...eventsRoll[index].date, date];
+    eventsRoll[index].dateString = `${eventsRoll[index].dateString} through ${dateObj.getMonth()+1}/${dateObj.getDate()+1}`
+  }
+
+  const removeDate = (index, dateIndex) => {
+    const dIndex = dateIndex === 0 ? 1 : 0;
+    const date = getFormattedDate(eventsRoll[index].date[dIndex]);
+    eventsRoll[index] = {
+      ...eventsRoll[index],
+      date,
+      dateString: eventsRoll[index].dateString.split(" through ")[dIndex]
     };
   }
 
@@ -165,9 +226,24 @@
         </button>
         <p>
           <b class="title">
-            <span on:keyup={()=>{}} on:click={(e)=>createDatepicker(e,i)}>
-              <span>{event.dateString}</span>
-            </span> - 
+            {#if Array.isArray(event.date)}
+                <span class="date" on:keyup={()=>{}} on:click={(e)=>createDatepicker(e,i,0)}>
+                  <span>{event.dateString.split(" through ")[0]}</span>
+                  <button on:click={()=>removeDate(i, 0)}>-</button>
+                </span>
+                <span class="spaced">through</span> 
+                <span class="date" on:keyup={()=>{}} on:click={(e)=>createDatepicker(e,i,1)}>
+                  <span>{event.dateString.split(" through ")[1]}</span>
+                  <button on:click={()=>removeDate(i, 1)}>-</button>
+                </span>
+                <span class="spaced">-</span>
+            {:else}
+              <span class="date" on:keyup={()=>{}} on:click={(e)=>createDatepicker(e,i)}>
+                <span>{event.dateString}</span>
+              </span>
+              <button on:click={()=>addDate(i)}>+</button>
+              <span class="spaced">-</span>
+            {/if}
             <span on:keyup={()=> {}} on:click={(e)=>createTitleInput(e,i)}>
               <span>{event.title}</span>
             </span>
@@ -198,7 +274,7 @@
     width:100vs; height:100vh; display: grid; place-items:center;
   }
   .manage div.events div.controlBox {
-    width: 500px;
+    min-width: 700px;
     min-height: 100px;
     border: 1px solid black;
     border-radius: 5px;
@@ -236,6 +312,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+
+  .manage div.events div.controlBox p b.title span.spaced {
+    margin: 0 4px;
+  }
+  
+  .manage div.events div.controlBox p b.title span.date {
+    display: flex;
   }
 
   .manage div.events div.controlBox p button.add-button {
