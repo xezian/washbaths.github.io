@@ -139,17 +139,19 @@
     input.type = "text";
     input.id = `text-input-${index}-${textIndex}`;
     input.value = eventsRoll[index].text[textIndex]
+    input.style.width = "fit-content";
+    const closeButton = createCloseButton();
     input.addEventListener('change', (e) => {
       eventsRoll[index] = {
         ...eventsRoll[index],
         text: eventsRoll[index].text.map((t, i) => i === textIndex ? input.value : t)
       }
       input.remove();
+      closeButton.remove();
       event.target.style.display = "inherit";
     });
     // hide the text
     event.target.style.display = "none";
-    const closeButton = createCloseButton();
     const hereGoes = document.createElement("div");
     closeButton.addEventListener('click', (e) => {
       e.preventDefault();
@@ -251,7 +253,9 @@
           {#if event.text}
             <div class="text">
               {#each [...event.text] as text, ti}
-              <span id={`text-${i}-${ti}`} on:keyup={()=>{}} on:click={(e)=>createTextInput(e,i,ti)}><span>{text}</span></span>
+                <div class="text-entry">
+                  <span contenteditable="true" bind:innerHTML={text} class="text" id={`text-${i}-${ti}`} on:keyup={()=>{}} on:click={(e)=>createTextInput(e,i,ti)}></span>
+                </div>
               {/each}
             </div>
           {/if}
@@ -293,6 +297,7 @@
     cursor: pointer;
     border-radius: 50%
   }
+
   .manage div.events div.controlBox button.close:hover {
     background: #333;
   }
@@ -307,6 +312,15 @@
     flex-direction: column;
     align-items: center;
   }
+  .manage div.events div.controlBox p div.text div.text-entry {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .manage div.events div.controlBox p div.text div.text-entry div.text {
+    width: fit-content;
+  }  
+  
   .manage div.events div.controlBox p b.title {
     display: flex;
     flex-direction: row;
