@@ -275,7 +275,7 @@
 
 <style>
   .manage {
-    width:100vs; height:100vh; display: grid; place-items:center;
+    width:100vw; height:100vh; display: grid; place-items:center;
   }
   .manage div.events div.controlBox {
     min-width: 700px;
