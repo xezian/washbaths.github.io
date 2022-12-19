@@ -1,19 +1,18 @@
 const SQUARE_CONFIG = {
-  locationId: "LRW80YM4VGE0J",
-  accessToken: "", // TODO move request to AWS lambda
+  locationId: "LZMWJADGEGMEQ",
 };
 
 const OPTIONS_CONFIG = {
   single: {
-    url: "https://square.link/u/tRdCZZXK",
-    amount: 1,
+    url: "https://square.link/u/GB39mKzF",
+    amount: 35,
   },
-  double: {
-    url: "https://square.link/u/iARaBDl8",
-    amount: 2,
+  fivePass: {
+    url: "https://square.link/u/khDO9CE5",
+    amount: 150,
   },
   tenPass: {
-    url: "https://square.link/u/iARaBDl8",
+    url: "https://square.link/u/oT3RqjIB",
     amount: 280,
   },
   custom: {
@@ -111,7 +110,7 @@ const createInputField = async () => {
 };
 
 const listenToDropdown = (e) => {
-  if (["single", "double", "tenPass"].includes(e.target.value)) {
+  if (["single", "fivePass", "tenPass"].includes(e.target.value)) {
     document.getElementById("custom-amount-area").style.display = "none";
     createPayButton(e.target.value);
   } else if (e.target.value === "custom") {
