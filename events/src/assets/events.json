@@ -1,0 +1,54 @@
+[
+    {
+        "title": "Reopening - Normal Hours",
+        "date": "2022-01-05"
+    },
+    {
+        "title": "Queer Community Night",
+        "date": "2022-12-14",
+        "text": [
+            "All-gender bathing",
+            "2pm - 9pm"
+        ]
+    },
+    {
+        "date": "2022-12-21",
+        "title": "Closed for Winter Break"
+    },
+    {
+        "date": "2022-12-20",
+        "title": "Winter Solstice Celebration",
+        "text": [
+            "Bathing from first light"
+        ]
+    },
+    {
+        "date": "2022-12-05",
+        "title": "Bread Soup Cake",
+        "text": [
+            "7pm - 10px",
+            "$25",
+            "*Bathing will close early at 6:30pm"
+        ]
+    },
+    {
+        "date": [
+            "2022-11-24",
+            "2022-11-25"
+        ],
+        "title": "Closed for Thanksgiving"
+    },
+    {
+        "date": "2022-11-12",
+        "title": "Closing early at 7pm"
+    },
+    {
+        "date": "2022-11-07",
+        "title": "Bread Soup Cake",
+        "text": [
+            "7pm - 10px",
+            "$25",
+            "*Bathing will close early at 6:30pm"
+        ]
+    }
+]
