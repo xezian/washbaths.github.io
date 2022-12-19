@@ -58,7 +58,7 @@
     if (document.getElementById(`date-${index}`)) return;
     const datepicker = document.createElement("input");
     datepicker.type = "date";
-    datepicker.value = !dateIndex ? eventsRoll[index].date : eventsRoll[index].date[dateIndex];
+    datepicker.value = dateIndex === undefined ? eventsRoll[index].date : eventsRoll[index].date[dateIndex];
     datepicker.id = `date-${index}`;
     const closeButton = createCloseButton();
     datepicker.addEventListener('change', (e) => {
