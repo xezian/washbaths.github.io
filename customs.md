@@ -1,3 +1,7 @@
+layout: page
+title: "customs"
+permalink: /customs/
+
 <!DOCTYPE html>
 
 <font color="">
