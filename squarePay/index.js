@@ -44,7 +44,7 @@ const createPayment = async (req, client) => {
     const payment = {
       idempotencyKey,
       quickPay: {
-        name: `Gift card for $${payload.amount / 100}`,
+        name: "- CUSTOM AMOUNT - Please note that gift cards are physical only. We do not offer digital gift cards. Please specify a recipient. All gift cards will be held at the front desk unless a mailing address is provided in the notes.",
         priceMoney: {
           amount: parseInt(payload.amount),
           currency: "USD",
@@ -54,7 +54,7 @@ const createPayment = async (req, client) => {
       checkoutOptions: {
         customFields: [
           {
-            title: "Mail to shipping address? Yes / No (Hold at baths)",
+            title: "Specify Recipient Here ✌️",
           },
         ],
         askForShippingAddress: true,
