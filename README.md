@@ -2,9 +2,9 @@
 
 deploys to GitHub Pages, everything here is public accessible.
 
-can be served for local development with `micro-dev`
+can be served for local development with `micro`
 
-run `npm i`, `npm run dev`
+run `npm i`, `npm run start`
 
 `services/` directory contains frontend javascript files
 
