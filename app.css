@@ -1,5 +1,17 @@
 * {
   box-sizing: border-box;
+  text-align: center;
+}
+
+input {
+  text-align: left;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .gift-cards {
