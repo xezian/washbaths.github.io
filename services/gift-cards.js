@@ -15,6 +15,10 @@ const OPTIONS_CONFIG = {
     url: "https://square.link/u/oT3RqjIB",
     amount: 280,
   },
+  fiftyDollar: {
+    url: "https://square.link/u/fsfdmHkU",
+    amount: 50,
+  },
   custom: {
     url: "#",
     amount: 0,
@@ -110,7 +114,7 @@ const createInputField = async () => {
 };
 
 const listenToDropdown = (e) => {
-  if (["single", "fivePass", "tenPass"].includes(e.target.value)) {
+  if (["single", "fivePass", "tenPass", "fiftyDollar"].includes(e.target.value)) {
     document.getElementById("custom-amount-area").style.display = "none";
     createPayButton(e.target.value);
   } else if (e.target.value === "custom") {
