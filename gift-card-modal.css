@@ -27,9 +27,9 @@
 
 #closeGiftCardModal {
     margin-right: 2px;
+    cursor: pointer;
 }
 
 #closeGiftCardModal:hover {
     color: #0000009f;
-    cursor: pointer;
 }

@@ -22,6 +22,16 @@ body {
   margin: 0.5rem 0;
 }
 
+.clickable-text {
+  color: darkgreen;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.clickable-text:hover {
+  color: green;
+}
+
 #custom-amount-area, #payment-button-area {
   display: none;
 }
