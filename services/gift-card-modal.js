@@ -1,26 +1,49 @@
 
-const gcmButton = document.getElementById("gift-card-modal-button");
+const gcm = {
+  loaded: false,
+  modal: null,
+};
 
 
 async function openModal () {
-  const gcm = document.getElementById("gift-card-modal");
   const position = document.documentElement.scrollTop;
   document.body.style.top =  "-" + position + "px";
   document.body.style.position = "fixed";
   document.body.style.width = "100%";
   document.body.style.overflowY = "scroll";
-  gcm.style.height = "100vh";
-  gcm.style.opacity = 1;
-  gcm.innerHTML = await (await fetch("gift-card-modal.html")).text();
+  if (!gcm.loaded) {
+    loadGCM();
+  }
+  gcm.modal.style.height = "100vh";
+  gcm.modal.style.opacity = 1;
   closeButton = document.getElementById("closeGiftCardModal")
   closeButton.addEventListener("click", () => {
     document.body.style.position = "static";
     document.body.style.overflow = "auto"
+    gcm.modal.style.opacity = 0;
     document.documentElement.scrollTop = position;
-    gcm.style.opacity = 0;
-    gcm.style.height = 0;
-    gcm.innerHTML = null;
+    setTimeout(()=>{
+      gcm.modal.style.height = 0;
+    }, 231);
   })
 }
 
-gcmButton.addEventListener("click", openModal)
+async function loadGCM () {
+  gcm.modal = document.getElementById("gift-card-modal");
+  gcm.modal.innerHTML = await (await fetch("gift-card-modal.html")).text();
+  await (await fetch("https://sandbox.web.squarecdn.com/v1/square.js")).text().then(txt => {
+    var script = document.createElement("script");
+    script.innerHTML = txt;
+    document.body.appendChild(script);
+  });
+  await (await fetch("gift-card-modal.js")).text().then(txt => {
+    var script = document.createElement("script");
+    script.innerHTML = txt;
+    document.body.appendChild(script);
+  });
+  gcm.loaded = true;
+}
+
+loadGCM();
+
+document.getElementById("gift-card-modal-button").addEventListener("click", openModal);

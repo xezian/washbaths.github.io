@@ -5,6 +5,7 @@ const staticHandler = require('serve-handler');
 // serve static files like index.html and favicon.ico from public/ directory
 async function serveStatic(req, res) {
   await staticHandler(req, res, {
+    favicon: "./favicon.svg",
     public: './',
   });
 }
